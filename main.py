@@ -15,7 +15,7 @@ def chat():
     try:
         data = request.get_json()
         user_message = data.get("message", "")
-        print("📝 Received message:", user_message)
+        print("📢 /chat endpoint was hit")
 
         # DEBUG: Check if API key is present
         if not openai.api_key:
