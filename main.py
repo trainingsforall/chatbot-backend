@@ -1,14 +1,13 @@
-
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import openai
 import os
 
-# Initialize Flask app and CORS
+# ✅ Create the Flask app — this line is critical!
 app = Flask(__name__)
 CORS(app)
 
-# Load OpenAI API key from environment
+# ✅ Load the OpenAI API key from environment variable
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 @app.route("/chat", methods=["POST"])
@@ -23,13 +22,11 @@ def chat():
             print("🚫 OPENAI_API_KEY is missing!")
             return jsonify({"error": "API key not found."}), 500
 
-        # Bot context
         context = """
         Welcome to Strategy Evolve. We offer online training for security professionals,
         AI tools, and business workflow consultancy.
         """
 
-        # Generate response using OpenAI
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=[
@@ -46,6 +43,6 @@ def chat():
         print("❌ ERROR in /chat route:", e)
         return jsonify({"error": str(e)}), 500
 
-# Run Flask server
+# ✅ Run the Flask app on port 10000
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=10000)
