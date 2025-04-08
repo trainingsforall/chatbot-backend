@@ -1,3 +1,4 @@
+
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import openai
@@ -15,7 +16,7 @@ def chat():
     try:
         data = request.get_json()
         user_message = data.get("message", "")
-        print("📢 /chat endpoint was hit")
+        print("📝 Received message:", user_message)
 
         # DEBUG: Check if API key is present
         if not openai.api_key:
