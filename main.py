@@ -1,12 +1,25 @@
+from flask import Flask, request, jsonify
+from flask_cors import CORS
+import openai
+import os
+
+# Initialize Flask app and CORS
+app = Flask(__name__)
+CORS(app)
+
+# Load OpenAI API key from environment
+openai.api_key = os.getenv("OPENAI_API_KEY")
+
 @app.route("/chat", methods=["POST"])
 def chat():
-    print("📢 /chat endpoint was called")  # ADDED this line outside try block
+    print("📢 /chat endpoint was called")  # Debug outside try
 
     try:
         data = request.get_json()
         user_message = data.get("message", "")
         print("📝 Received message:", user_message)
 
+        # Check if API key exists
         if not openai.api_key:
             print("🚫 OPENAI_API_KEY is missing!")
             return jsonify({"error": "API key not found."}), 500
@@ -27,7 +40,3 @@ def chat():
         print("✅ OpenAI response:", response)
 
         return jsonify({"response": response.choices[0].message.content})
-
-    except Exception as e:
-        print("❌ ERROR in /chat route:", e)
-        return jsonify({"error": str(e)}), 500
