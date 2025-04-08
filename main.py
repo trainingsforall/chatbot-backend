@@ -1,3 +1,13 @@
+from flask import Flask, request, jsonify
+from flask_cors import CORS
+import openai
+import os
+
+# Initialize app and set API key
+app = Flask(__name__)
+CORS(app)
+openai.api_key = os.getenv("OPENAI_API_KEY")
+
 @app.route("/chat", methods=["POST"])
 def chat():
     try:
@@ -17,7 +27,7 @@ def chat():
             ]
         )
 
-        # 🐞 Log the full OpenAI response
+        # Debug log to Render logs
         print("🔁 OpenAI raw response:", response)
 
         return jsonify({"response": response.choices[0].message.content})
@@ -25,3 +35,6 @@ def chat():
     except Exception as e:
         print("❌ ERROR:", e)
         return jsonify({"error": str(e)}), 500
+
+if __name__ == "__main__":
+    app.run(debug=True, host="0.0.0.0", port=10000)
