@@ -40,3 +40,11 @@ def chat():
         print("✅ OpenAI response:", response)
 
         return jsonify({"response": response.choices[0].message.content})
+
+    except Exception as e:
+        print("❌ ERROR in /chat route:", e)
+        return jsonify({"error": str(e)}), 500
+
+# Start the server
+if __name__ == "__main__":
+    app.run(debug=True, host="0.0.0.0", port=10000)
